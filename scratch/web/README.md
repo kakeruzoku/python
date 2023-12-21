@@ -20,6 +20,10 @@ pip3 install PySimpleGUI
 pip3 install scratchattach
 ```
 
+## 実行方法
+
+Scratch_web.pyをインストールした後.pyファイルを実行すると実行されます。
+
 ## 利用可能な機能
 
 現在次の機能が利用可能です
