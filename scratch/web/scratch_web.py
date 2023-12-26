@@ -1,5 +1,7 @@
-ver = "α1.0"
+ver = "α1.1"
 kousin_rireki = """更新履歴
+
+α1.1 exe版公開
 α1.0 公開"""
 
 print("バージョン:",ver)
@@ -10,9 +12,10 @@ try:
     import scratchattach as s3
     import traceback
 except:
-    print("次のプログラムをpipでインストールしてください。")
-    print("・PySimpleGUI")
-    print("・scratchattach")
+    print("正しく読み込めませんでした。")
+    #print("次のプログラムをpipでインストールしてください。")
+    #print("・PySimpleGUI")
+    #print("・scratchattach")
     sys.exit()
 
 try:
@@ -21,13 +24,33 @@ try:
     mode = "login"#画面を表す
     
     #helpテキストの事前用意
-    help_login = "Qログイン出来ません。\nA次の可能性があります。\n・パスワードまたはユーザー名またはログインセッションが違う\n・ログイン方法の選択が違う\n・IPBANまたはBANされている\n\nログインセッションの探し方\n・scratch.mit.eduのcookieを探します。\n・「scratchsessionid」を選択します。\n・コンテンツを全てコピーします。\n※現在セッションログインの入力を間違えても続行ができてしまうため、パスワードログインをお勧めします。"
+    help_login = """Qログイン出来ません。
+A次の可能性があります。
+・パスワードまたはユーザー名またはログインセッションが違う
+・ログイン方法の選択が違う
+・IPBANまたはBANされている
+
+ログインセッションの探し方
+・scratch.mit.eduのcookieを探します。
+・「scratchsessionid」を選択します。
+・コンテンツを全てコピーします。
+※現在セッションログインの入力を間違えても続行ができてしまうため、パスワードログインをお勧めします。"""
     welcome = """ようこそ!
 ※始める前に必ずIDLEを確認し、警告(青字)が出ていないか確認してください。エラーが出ていた場合は「何か文章が出てきた場合」を見てください。また、scratchサーバーの負荷をかけるようなことはおやめください。
 TimMcCool作scratchattachとPySimpleGUIを使用しています。
 https://x.gd/kakeru_scpy を必ず確認してください。
 """
-    help_login_session = "Warning: The account you logged in to is BANNED. Some features may not work properly.\n訳:垢BANされています。\nWarning: Logged in, but couldn't fetch XToken.\nSome features (including cloud variables) will not work properly. To get cloud variables to work, provide a username argument: Session('session_id', username='username')\nIf you're using an online IDE (like replit.com) Scratch possibly banned its IP adress.　または　\nWarning: Logged in, but couldn't fetch XToken. Cloud variables will still work, but other features may not work properly.\nIf you're using an online IDE (like replit.com) Scratch possibly banned its IP adress.\n訳:XTokenが取得できなかったため、ログインされていますが、一部の機能は使えません。\nYour network is blocked or rate-limited by Scratch.\nIf you're using an online IDE like replit.com, try running the code on your computer.\n訳:IPBANされています。別のIPを利用してください。\n\nこれらが表示された場合は、再ログインしてください。これを続行したことに対する不具合の報告は受け付けません。"
+    help_login_session = """Warning: The account you logged in to is BANNED. Some features may not work properly.
+    訳:垢BANされています。\nWarning: Logged in, but couldn't fetch XToken.
+    Some features (including cloud variables) will not work properly. To get cloud variables to work, provide a username argument: Session('session_id', username='username')
+    If you're using an online IDE (like replit.com) Scratch possibly banned its IP adress.　または　
+    Warning: Logged in, but couldn't fetch XToken. Cloud variables will still work, but other features may not work properly.
+    If you're using an online IDE (like replit.com) Scratch possibly banned its IP adress.
+    訳:XTokenが取得できなかったため、ログインされていますが、一部の機能は使えません。
+    Your network is blocked or rate-limited by Scratch.\nIf you're using an online IDE like replit.com, try running the code on your computer.
+    訳:IPBANされています。別のIPを利用してください。
+
+    これらが表示された場合は、再ログインしてください。これを続行したことに対する不具合の報告は受け付けません。"""
     
     deta_syutoku = True
     
