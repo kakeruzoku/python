@@ -1,6 +1,7 @@
-ver = "α1.1"
+ver = "α2.0"
 kousin_rireki = """更新履歴
 
+α2.0 プロジェクトの詳細を見る機能を追加
 α1.1 exe版公開
 α1.0 公開"""
 
@@ -11,6 +12,7 @@ try:
     import PySimpleGUI as sg
     import scratchattach as s3
     import traceback
+    import webbrowser
 except:
     print("正しく読み込めませんでした。")
     #print("次のプログラムをpipでインストールしてください。")
@@ -57,6 +59,7 @@ https://x.gd/kakeru_scpy を必ず確認してください。
     def layout(gamen):#画面用意
         global deta_syutoku
         global key_ID
+        global project_id
         if gamen == "login":#ログイン画面
             def_layout = [[sg.T("welcome to scratch in python!"),sg.B("更新履歴" , k="kousin_rireki")],
                             [sg.T("--------------------")],
@@ -71,13 +74,13 @@ https://x.gd/kakeru_scpy を必ず確認してください。
                             [sg.B("ログイン" , k="login_login"),sg.B("ヘルプ" , k="login_help")],
                             [sg.T("" , k="login_sita")]]
             def_ookisa = 400,350
-            def_name = "scratchWEB/login"
+            def_name = "scratchWEB/ログイン"
         elif gamen == "welcome":#ようこそ
             def_layout = [[sg.T("情報"),sg.Checkbox("確認しました。", default=False, k="welcome_OK"),sg.B("ログインし直す" , k="welcome_back")],
                           [sg.ML(welcome , size=(50,16))],
                           [sg.B("確認した上でトップページへ" , k="welcome_go_home"),sg.B("何か文章が出てきた場合" ,  k="login_session_help")]]
             def_ookisa = 400,350
-            def_name = "ようこそ！"
+            def_name = "次の内容を確認してください。"
         elif gamen == "home":#ホーム画面
             deta_syutoku = True
             def_layout = [home_login_text(1),
@@ -90,12 +93,12 @@ https://x.gd/kakeru_scpy を必ず確認してください。
                           [sg.Radio("プロジェクト",group_id="search",default=True),sg.Radio("スタジオ",group_id="search"),sg.Radio("フォーラムの投稿",group_id="search")],
                           [sg.T("")],
                           [sg.T("IDを入力してアクセス")],
-                          [sg.T("プロジェクト",size=25),sg.I("IDを入力",size=50),sg.B("アクセス！")],
-                          [sg.T("スタジオ",size=25),sg.I("IDを入力",size=50),sg.B("アクセス！")],
-                          [sg.T("ユーザー",size=25),sg.I("IDを入力",size=50),sg.B("アクセス！")],
-                          [sg.T("フォーラムのトピック",size=25),sg.I("IDを入力",size=50),sg.B("アクセス！")],
-                          [sg.T("フォーラムの投稿",size=25),sg.I("IDを入力",size=50),sg.B("アクセス！")],
-                          [sg.T("URL",size=25),sg.I("https://scratch.mit.edu/",size=50),sg.B("アクセス！")]]
+                          [sg.T("プロジェクト",size=25),sg.I("IDを入力",size=50,k="home_project_ID"),sg.B("アクセス！",k="home_project_open")],
+                          [sg.T("スタジオ",size=25),sg.I("未対応",size=50),sg.B("アクセス！")],
+                          [sg.T("ユーザー",size=25),sg.I("未対応",size=50),sg.B("アクセス！")],
+                          [sg.T("フォーラムのトピック",size=25),sg.I("未対応",size=50),sg.B("アクセス！")],
+                          [sg.T("フォーラムの投稿",size=25),sg.I("未対応",size=50),sg.B("アクセス！")],
+                          [sg.T("URL",size=25),sg.I("未対応",size=50),sg.B("アクセス！")]]
             def_ookisa = 700,500
             def_name = "Scratch - 想像、プログラム、共有"
         elif gamen == "home_news":
@@ -152,11 +155,12 @@ https://x.gd/kakeru_scpy を必ず確認してください。
         elif gamen == "home_FP_S":
             deta_syutoku = False
             global home_FP_D
+            project_id = home_FP_D[key_ID]['id']
             def_layout = [[sg.B("scratch",k="go_home"),sg.B("注目のプロジェクト TOP",k="home_FP")],
                           [sg.T("")],
                           [sg.T(f"{home_FP_D[key_ID]['title']}")],
                           [sg.T(f"作:@{home_FP_D[key_ID]['creator']},{home_FP_D[key_ID]['love_count']}ハート")],
-                          [sg.B("プロジェクトへ行く！")]]
+                          [sg.B("プロジェクトへ行く！",k="go_project")]]
             def_ookisa = 400,200
             def_name = home_FP_D[key_ID]['title']
         elif gamen == "home_FS":
@@ -206,11 +210,12 @@ https://x.gd/kakeru_scpy を必ず確認してください。
         elif gamen == "home_love_S":
             deta_syutoku = False
             global home_love_D
+            project_id = home_love_D[key_ID]['id']
             def_layout = [[sg.B("scratch",k="go_home"),sg.B("コミュニティの好きなもの TOP",k="home_love")],
                           [sg.T("")],
                           [sg.T(f"{home_love_D[key_ID]['title']}")],
                           [sg.T(f"作:@{home_love_D[key_ID]['creator']},{home_love_D[key_ID]['love_count']}ハート")],
-                          [sg.B("プロジェクトへ行く！")]]
+                          [sg.B("プロジェクトへ行く！",k="go_project")]]
             def_ookisa = 400,200
             def_name = home_love_D[key_ID]['title']
         elif gamen == "home_remix":
@@ -241,11 +246,12 @@ https://x.gd/kakeru_scpy を必ず確認してください。
         elif gamen == "home_remix_S":
             deta_syutoku = False
             global home_remix_D
+            project_id = home_remix_D[key_ID]['id']
             def_layout = [[sg.B("scratch",k="go_home"),sg.B("コミュニティでリミックスされているもの TOP",k="home_remix")],
                           [sg.T("")],
                           [sg.T(f"{home_remix_D[key_ID]['title']}")],
                           [sg.T(f"作:@{home_remix_D[key_ID]['creator']},{home_remix_D[key_ID]['remixers_count']}リミックス")],
-                          [sg.B("プロジェクトへ行く！")]]
+                          [sg.B("プロジェクトへ行く！",k="go_project")]]
             def_ookisa = 400,200
             def_name = home_remix_D[key_ID]['title']
         elif gamen == "home_toukei":
@@ -262,6 +268,17 @@ https://x.gd/kakeru_scpy を必ず確認してください。
                           [sg.B("ログアウトする",k="welcome_back")]]
             def_ookisa = 300,100
             def_name = "アカウントメニュー"
+        elif gamen == "project":
+            global project
+            global open_purauza
+            project_id = project.id
+            open_purauza = project.url
+            def_layout = [[sg.B("scratch",k="go_home"),sg.T(f"URL:{project.url}"),sg.B("プラウザで開く",k="open_purauza")],
+                          [sg.T(f"{project.title}    by:"),sg.B(project.author)],
+                          [sg.ML(f"使い方:\n{project.instructions}",size=(40,8)),sg.ML(f"メモとクレジット:\n{project.notes}",size=(40,8))],
+                          [sg.T(f"ハート:{project.loves} 星:{project.favorites} リミックス:{project.remix_count} 参照数:{project.views}")]]
+            def_ookisa = 700,500
+            def_name = project.title
         return [def_layout,def_ookisa,def_name]
 
     def hyouzi(deta):#画面描画
@@ -475,6 +492,28 @@ https://x.gd/kakeru_scpy を必ず確認してください。
                 home_toukei_D = s3.total_site_stats()
             window.close()
             window = hyouzi(layout("home_toukei"))
+
+        elif e == "go_project":#プロジェクト
+            mode = "project"
+            project = s3.get_project(project_id)#ログイン機能なし
+            if project.is_shared():
+                window.close()
+                window = hyouzi(layout("project"))
+
+        elif e == "open_purauza":#プラウザで開く
+            webbrowser.open(open_purauza)
+
+        elif e == "home_project_open":#projectをIDで開く
+            try:
+                int(v["home_project_ID"])#数値?
+            except ValueError:
+                True
+            else:
+                mode = "project"
+                project = s3.get_project(v["home_project_ID"])
+                if project.is_shared():
+                    window.close()
+                    window = hyouzi(layout("project"))
 
         elif e == "key_0":
             key_load(0)
