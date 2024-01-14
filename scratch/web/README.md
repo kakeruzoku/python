@@ -17,7 +17,7 @@ Scratch web は pythonで制作されたwindows上(exe)で動作するScratchで
 ## インストール方法
 
 scratch_web.zipをダウンロードします。
-ファイルを回答します。
+ファイルを解凍します。
 scratch_web.exeを実行します。
 
 ## 利用可能な機能
